@@ -9,7 +9,7 @@ git fetch --all --tags
 cd ..
 
 # Configure duktape
-python2 duktape/tools/configure.py \
+[ ! -d ./duk_src ] && python2 duktape/tools/configure.py \
         --rom-support \
         --rom-auto-lightfunc \
         --option-file duktape/config/examples/low_memory.yaml \
