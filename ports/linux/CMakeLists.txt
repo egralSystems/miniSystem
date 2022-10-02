@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.16)
-
 project(miniSystem_Linux)
 
 add_executable(miniSystem_Linux

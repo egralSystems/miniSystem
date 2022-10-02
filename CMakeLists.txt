@@ -15,15 +15,8 @@ add_library(duktape
 
 target_include_directories(duktape PUBLIC duk_src)
 
-# Add miniSystem library target
-project(miniSystem)
-
-add_library(miniSystem
-  src/miniSystem.cpp
-)
-
-target_include_directories(miniSystem PUBLIC src duk_src)
-target_link_libraries(miniSystem PUBLIC duktape)
+# miniSystem library
+add_subdirectory(miniSystem)
 
 # ports
 add_subdirectory(ports)
