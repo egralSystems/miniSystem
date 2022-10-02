@@ -8,7 +8,6 @@ Available tasks to be done and take on.
 
 ---
 
-- Console interface for console.log and so on.
 - Network interface.
 - File system interface.
 - Audio processing interface and library.
@@ -31,6 +30,6 @@ Tasks and features that have been completed and are ready to use.
 
 ---
 
-
+- (m1cha1s) Console interface for console.log and so on.
 
 ---
