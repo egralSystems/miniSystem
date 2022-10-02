@@ -9,3 +9,18 @@ Fork the repo, then create a new branch named after the feature that you want to
 
 ## What to keep in mind when contributing
 All tasks for the core that need to be done are in TASKS.md. There are also instructions how to take a task on. I encourage you, if you are working on a port than also keep all tasks in a simmilar format in the port directory as TASKS.md. This is so that other people can look what needs to be done and help out.
+
+## How to build
+```
+$ git clone git@github.com:m1cha1s/miniSystem.git
+$ cd miniSystem
+$ cmake -B build .
+$ cd build
+$ cmake --build .
+```
+
+## How to run
+```
+To run, for example, the linux port run(in the project root dir)
+$ ./build/ports/linux/miniSystem_Linux
+```
