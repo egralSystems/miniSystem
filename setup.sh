@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Clone duktape and switch to version 2.7.0
-git clone git@github.com:svaarala/duktape.git
-cd duktape
-git checkout tags/v2.7.0
-git fetch --all --tags
+[ ! -d ./duktape ] && git clone git@github.com:svaarala/duktape.git && \
+cd duktape && \
+git checkout tags/v2.7.0 && \
+git fetch --all --tags && \
 
 cd ..
 
