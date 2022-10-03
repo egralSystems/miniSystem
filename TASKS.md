@@ -21,7 +21,7 @@ Tasks that are a work in progress and who is developing it.
 
 ---
 
-
+- (m1cha1s) Console interface for console.log and so on. (as of now the .log .warn .debug .error methods do something)
 
 ---
 
@@ -30,6 +30,5 @@ Tasks and features that have been completed and are ready to use.
 
 ---
 
-- (m1cha1s) Console interface for console.log and so on.
 
 ---

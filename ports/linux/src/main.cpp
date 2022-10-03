@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <miniSystem.hpp>
 #include <console.hpp>
-
-#include "console_linux.hpp"
+#include <stream.hpp>
 
 static void fault_handler(void *, const char *msg)
 {
@@ -11,38 +10,32 @@ static void fault_handler(void *, const char *msg)
     exit(1);
 }
 
+class ConsoleIf : public StreamIf<char>
+{
+public:
+    bool readable = false;
+    bool writable = true;
+
+    ConsoleIf() {}
+    ~ConsoleIf() {}
+
+    void write(const std::vector<char> &src)
+    {
+        std::string msg(src.begin(), src.end());
+        printf("%s\n", msg.c_str());
+    }
+
+    void read(std::vector<char> &dst)
+    {
+    }
+};
+
 int main()
 {
-    Console console = {
-        console_assert,
-        console_clear,
-        console_count,
-        console_countReset,
-        console_debug,
-        console_dir,
-        console_dirxml,
-        console_error,
-        console_group,
-        console_groupCollapsed,
-        console_groupEnd,
-        console_info,
-        console_log,
-        console_table,
-        console_time,
-        console_timeEnd,
-        console_timeLog,
-        console_trace,
-        console_warn};
 
-    printf("Created console.\n");
+    consoleStream.init(new ConsoleIf());
 
     MiniSystem ms(fault_handler);
-
-    printf("Created MiniSystem.\n");
-
-    ms.define(console);
-
-    printf("Defined console.\n");
 
     printf("Result: %d.\n", ms.eval("console.log('Hello world!')"));
 }

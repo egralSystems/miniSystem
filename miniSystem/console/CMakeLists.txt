@@ -5,6 +5,4 @@ add_library(console
 )
 
 target_include_directories(console PUBLIC .)
-target_link_libraries(console PUBLIC duktape)
-
-target_link_libraries(miniSystem PUBLIC console)
+target_link_libraries(console PUBLIC duktape stream)

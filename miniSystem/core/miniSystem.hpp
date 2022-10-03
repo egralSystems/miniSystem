@@ -12,7 +12,5 @@ public:
     MiniSystem(duk_fatal_function fatal_handler = NULL, duk_alloc_function alloc_func = NULL, duk_realloc_function realloc_func = NULL, duk_free_function free_func = NULL, void *heap_udata = NULL);
     ~MiniSystem();
 
-    void define(Console);
-
     int eval(const char *);
 };
