@@ -15,8 +15,5 @@ add_library(duktape
 
 target_include_directories(duktape PUBLIC duk_src)
 
-# miniSystem library
-add_subdirectory(miniSystem)
-
-# ports
-add_subdirectory(ports)
+# miniSystem library src
+add_subdirectory(src)
