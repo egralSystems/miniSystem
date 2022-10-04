@@ -2,6 +2,7 @@
 #include <miniSystem.hpp>
 #include <console.hpp>
 #include <stream.hpp>
+#include <string>
 
 static void fault_handler(void *, const char *msg)
 {
@@ -10,7 +11,7 @@ static void fault_handler(void *, const char *msg)
     exit(1);
 }
 
-class ConsoleIf : public StreamIf<char>
+class ConsoleIf : public StreamIf<std::string>
 {
 public:
     bool readable = false;
@@ -19,13 +20,12 @@ public:
     ConsoleIf() {}
     ~ConsoleIf() {}
 
-    void write(const std::vector<char> &src)
+    void write(const std::string &src)
     {
-        std::string msg(src.begin(), src.end());
-        printf("%s\n", msg.c_str());
+        printf("%s\n", src.c_str());
     }
 
-    void read(std::vector<char> &dst)
+    void read(std::string &dst)
     {
     }
 };

@@ -1,6 +1,6 @@
 #include "console.hpp"
 
-Stream<char> consoleStream;
+Stream<std::string> consoleStream;
 
 void init_console(duk_context *ctx)
 {

@@ -4,12 +4,20 @@
 #include <vector>
 #include <string>
 
-extern Stream<char> consoleStream;
+extern Stream<std::string> consoleStream;
 
-struct Console
+class Console
 {
+private:
+public:
     static duk_ret_t assert(duk_context *ctx)
     {
+        if (duk_get_top(ctx) < 2)
+            return DUK_ERR_SYNTAX_ERROR;
+        duk_push_string(ctx, " ");
+        duk_insert(ctx, 0);
+        duk_join(ctx, duk_get_top(ctx) - 1);
+
         return 0;
     }
 
@@ -45,14 +53,16 @@ struct Console
 
     static duk_ret_t error(duk_context *ctx)
     {
+        if (duk_get_top(ctx) == 0)
+        {
+            consoleStream << "";
+        }
+
         duk_push_string(ctx, " ");
         duk_insert(ctx, 0);
         duk_join(ctx, duk_get_top(ctx) - 1);
 
-        std::string msg = duk_safe_to_string(ctx, -1);
-        msg = "ERROR: " + msg;
-        std::vector vmsg(msg.begin(), msg.end());
-        consoleStream << vmsg;
+        consoleStream << "ERROR: " + std::string(duk_safe_to_string(ctx, -1));
         return 0;
     }
 
@@ -77,9 +87,7 @@ struct Console
         duk_insert(ctx, 0);
         duk_join(ctx, duk_get_top(ctx) - 1);
 
-        std::string msg = duk_safe_to_string(ctx, -1);
-        msg = "INFO: " + msg;
-        consoleStream << std::vector<char>(msg.begin(), msg.end());
+        consoleStream << "INFO: " + std::string(duk_safe_to_string(ctx, -1));
 
         return 0;
     }
@@ -91,9 +99,7 @@ struct Console
         duk_insert(ctx, 0);
         duk_join(ctx, duk_get_top(ctx) - 1);
 
-        std::string msg = duk_safe_to_string(ctx, -1);
-        msg = "LOG: " + msg;
-        consoleStream << std::vector<char>(msg.begin(), msg.end());
+        consoleStream << "LOG: " + std::string(duk_safe_to_string(ctx, -1));
 
         return 0;
     }
@@ -129,9 +135,7 @@ struct Console
         duk_insert(ctx, 0);
         duk_join(ctx, duk_get_top(ctx) - 1);
 
-        std::string msg = duk_safe_to_string(ctx, -1);
-        msg = "WARNING: " + msg;
-        consoleStream << std::vector<char>(msg.begin(), msg.end());
+        consoleStream << "WARNING: " + std::string(duk_safe_to_string(ctx, -1));
 
         return 0;
     }
