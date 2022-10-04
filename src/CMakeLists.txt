@@ -14,7 +14,10 @@ add_subdirectory(console)
 
 target_include_directories(miniSystem PUBLIC src duk_src)
 target_link_libraries(miniSystem PUBLIC 
-    duktape
+    jerry-core
+    jerry-ext
+    jerry-math
+    jerry-port
     stream
     console
 )
