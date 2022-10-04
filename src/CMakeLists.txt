@@ -8,11 +8,10 @@ add_subdirectory(stream)
 
 target_include_directories(miniSystem PUBLIC 
     src 
-    ../wren/src/include
+    ${WREN_DIR}/src/include
 )
 target_link_libraries(miniSystem PUBLIC 
-    ../wren/lib/libwren.a    
+    ${WREN_DIR}/lib/libwren.a    
 
     stream
-    console
 )

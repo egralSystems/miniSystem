@@ -12,6 +12,8 @@ execute_process(
   WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/wren
 )
 
+set(WREN_DIR ${CMAKE_CURRENT_LIST_DIR}/wren)
+
 # Add miniSystem library target
 project(miniSystem)
 
