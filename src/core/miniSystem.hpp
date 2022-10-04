@@ -1,13 +1,19 @@
 #pragma once
-#include <jerryscript.h>
-
-#include <console.hpp>
+#include <wren.hpp>
 
 class MiniSystem
 {
+private:
+    WrenVM *vm;
+    static Stream<std::string> consoleStream;
+
 public:
-    MiniSystem();
+    MiniSystem(StreamIf<std::string> *consoleStreamIf);
     ~MiniSystem();
 
-    int eval(const char *);
+    static void writeFn(WrenVM *, const char *);
+    static void errorFn(WrenVM *, WrenErrorType, const char *, const int, const char *);
+
+    int
+    eval(const char *);
 };

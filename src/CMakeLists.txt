@@ -1,6 +1,3 @@
-# Add miniSystem library target
-project(miniSystem)
-
 # The core
 add_subdirectory(core)
 
@@ -9,15 +6,13 @@ add_subdirectory(core)
 # Stream interface
 add_subdirectory(stream)
 
-# Console interface
-add_subdirectory(console)
-
-target_include_directories(miniSystem PUBLIC src duk_src)
+target_include_directories(miniSystem PUBLIC 
+    src 
+    ../wren/src/include
+)
 target_link_libraries(miniSystem PUBLIC 
-    jerry-core
-    jerry-ext
-    jerry-math
-    jerry-port
+    ../wren/lib/libwren.a    
+
     stream
     console
 )

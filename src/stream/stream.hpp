@@ -24,7 +24,10 @@ private:
 public:
     Stream(StreamIf<DataType> *sif);
     Stream() {}
-    ~Stream() {}
+    ~Stream()
+    {
+        delete sif;
+    }
 
     void init(StreamIf<DataType> *sif)
     {
