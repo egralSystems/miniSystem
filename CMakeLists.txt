@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.16)
 
 # Setup duktape
 execute_process(
-  COMMAND sh ${CMAKE_CURRENT_LIST_DIR}/setup.sh
+  COMMAND git submodule init
+  COMMAND git submodule update 
   WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}  
 )
 
