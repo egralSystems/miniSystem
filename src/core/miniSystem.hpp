@@ -1,5 +1,6 @@
 #pragma once
 #include <wren.hpp>
+#include <stream.hpp>
 
 class MiniSystem
 {
