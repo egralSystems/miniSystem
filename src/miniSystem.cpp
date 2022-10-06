@@ -42,9 +42,13 @@ WrenForeignClassMethods bindForeignClass(WrenVM *vm, const char *module, const c
 {
     WrenForeignClassMethods methods;
 
+    methods.allocate = nullptr;
+    methods.finalize = nullptr;
+
     if (strcmp(className, "File") == 0)
     {
-        // methods.allocate
+        methods.allocate = fileAllocate;
+        methods.finalize = fileFinalize;
     }
 
     return methods;
@@ -52,38 +56,48 @@ WrenForeignClassMethods bindForeignClass(WrenVM *vm, const char *module, const c
 
 WrenForeignMethodFn bindForeignMethod(WrenVM *vm, const char *module, const char *className, bool isStatic, const char *sig)
 {
+    if (!strcmp(module, "main"))
+    {
+        if (!strcmp(className, "File"))
+        {
+            if (!isStatic && !strcmp(sig, "read(_)"))
+                return fileRead;
+            if (!isStatic && !strcmp(sig, "write(_)"))
+                return fileWrite;
+            if (!isStatic && !strcmp(sig, "size()"))
+                return fileSize;
+            if (!isStatic && !strcmp(sig, "seek(_)"))
+                return fileSeek;
+            if (!isStatic && !strcmp(sig, "close()"))
+                return fileClose;
+        }
+    }
+
     return nullptr;
 }
 
-MiniSystem::MiniSystem(StreamIf<std::string> *cif, FileIf *fif)
-{
-    WrenConfiguration config;
-    wrenInitConfiguration(&config);
+// template <typename Cif, typename Fif>
+// MiniSystem<Cif, Fif>::MiniSystem()
+// {
+//     WrenConfiguration config;
+//     wrenInitConfiguration(&config);
 
-    config.writeFn = &writeFn;
-    config.errorFn = &errorFn;
-    config.bindForeignClassFn = &bindForeignClass;
-    config.bindForeignMethodFn = &bindForeignMethod;
+//     config.writeFn = writeFn;
+//     config.errorFn = errorFn;
+//     config.bindForeignClassFn = bindForeignClass;
+//     config.bindForeignMethodFn = bindForeignMethod;
 
-    vm = wrenNewVM(&config);
+//     vm = wrenNewVM(&config);
 
-    if (cif)
-    {
-        console = true;
-        consoleStream.init(cif);
-    }
+//     consoleStream.init(new Cif);
+// }
 
-    if (fif)
-    {
-        fs = true;
-        fileSystem.init(fif);
-    }
-}
+// template <typename Cif, typename Fif>
+// MiniSystem<Cif, Fif>::~MiniSystem() {}
 
-MiniSystem::~MiniSystem() {}
-
-int MiniSystem::eval(std::string prog)
-{
-    wrenInterpret(vm, "main", prog.c_str());
-    return 0;
-}
+// template <typename Cif, typename Fif>
+// int MiniSystem<Cif, Fif>::eval(std::string prog)
+// {
+//     wrenInterpret(vm, "main", prog.c_str());
+//     return 0;
+// }

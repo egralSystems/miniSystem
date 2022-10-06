@@ -10,36 +10,31 @@ public:
     FileIf(){};
     ~FileIf(){};
 
-    virtual void *open(std::string path, std::string accessType) = 0;
-    virtual void close(void *) = 0;
-    virtual std::string read(void *, int charCount) = 0;
-    virtual void write(void *, std::string) = 0;
-    virtual int size(void *) = 0;
-    virtual void seek(void *, int pos) = 0;
+    virtual void open(std::string path, std::string accessType) = 0;
+    virtual void close() = 0;
+    virtual std::string read(int charCount) = 0;
+    virtual void write(std::string) = 0;
+    virtual int size() = 0;
+    virtual void seek(int pos) = 0;
 };
 
 class File
 {
-private:
-    FileIf *fif;
-
 public:
+    int fifSize = 0;
+
     File(){};
     ~File();
 
-    void init(FileIf *fif);
+    template <typename Fif>
+    FileIf *newFile();
 
-    void *open(std::string path, std::string accessType);
-    void close(void *file);
-    std::string read(void *file, int charCount);
-    void write(void *file, std::string);
-    int size(void *file);
-    void seek(void *file, int pos);
+    template <typename Fif>
+    void sizeOfFif();
 };
 
 void fileAllocate(WrenVM *vm);
-void fileFinalize(WrenVM *vm);
-void fileOpen(WrenVM *vm);
+void fileFinalize(void *data);
 void fileClose(WrenVM *vm);
 void fileRead(WrenVM *vm);
 void fileWrite(WrenVM *vm);
