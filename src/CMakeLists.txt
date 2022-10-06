@@ -9,6 +9,8 @@ target_link_libraries(wren INTERFACE ${WREN_DIR}/lib/libwren.a)
 add_library(miniSystem 
     miniSystem.cpp
     fs.cpp
+    file.cpp
+    io.cpp
     stream.cpp
 )
 

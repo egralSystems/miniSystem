@@ -3,30 +3,24 @@
 
 #include "stream.hpp"
 #include "fs.hpp"
+#include "io.hpp"
 
-extern Stream<std::string> consoleStream;
-extern File fileSystem;
-
-void writeFn(WrenVM *vm, const char *msg);
-void errorFn(WrenVM *vm, WrenErrorType errorType, const char *module, const int line, const char *msg);
 WrenForeignClassMethods bindForeignClass(WrenVM *vm, const char *module, const char *className);
 WrenForeignMethodFn bindForeignMethod(WrenVM *vm, const char *module, const char *className, bool isStatic, const char *sig);
 
-template <typename Cif, typename Fif>
 class MiniSystem
 {
 private:
+    IO io;
     WrenVM *vm;
 
-    bool console = false;
-    bool fs = false;
-
 public:
-    MiniSystem()
+    MiniSystem(IO new_io)
     {
         WrenConfiguration config;
         wrenInitConfiguration(&config);
 
+        // TODO: add module loader
         config.writeFn = writeFn;
         config.errorFn = errorFn;
         config.bindForeignClassFn = bindForeignClass;
@@ -34,7 +28,9 @@ public:
 
         vm = wrenNewVM(&config);
 
-        consoleStream.init(new Cif);
+        io = new_io;
+
+        io.registerIO(vm);
     }
     ~MiniSystem() {}
 
