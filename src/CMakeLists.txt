@@ -1,17 +1,20 @@
+project(wren)
+
+add_library(wren INTERFACE)
+
+target_include_directories(wren INTERFACE ${WREN_DIR}/src/include)
+target_link_libraries(wren INTERFACE ${WREN_DIR}/lib/libwren.a)
+
 # The core
-add_subdirectory(core)
-
-# Insert you features below this line
-
-# Stream interface
-add_subdirectory(stream)
+add_library(miniSystem 
+    miniSystem.cpp
+    fs.cpp
+    stream.cpp
+)
 
 target_include_directories(miniSystem PUBLIC 
-    src 
-    ${WREN_DIR}/src/include
+    .
 )
 target_link_libraries(miniSystem PUBLIC 
-    ${WREN_DIR}/lib/libwren.a    
-
-    stream
+    wren
 )
