@@ -11,11 +11,11 @@ WrenForeignMethodFn bindForeignMethod(WrenVM *vm, const char *module, const char
 class MiniSystem
 {
 private:
-    IO io;
+    IO *io;
     WrenVM *vm;
 
 public:
-    MiniSystem(IO new_io)
+    MiniSystem(IO *new_io)
     {
         WrenConfiguration config;
         wrenInitConfiguration(&config);
@@ -30,9 +30,13 @@ public:
 
         io = new_io;
 
-        io.registerIO(vm);
+        io->registerIO(vm);
     }
-    ~MiniSystem() {}
+    ~MiniSystem()
+    {
+        delete io;
+        wrenFreeVM(vm);
+    }
 
     int eval(std::string prog)
     {

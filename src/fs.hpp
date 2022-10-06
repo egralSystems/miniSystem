@@ -12,7 +12,7 @@ public:
     FSIf(){};
     ~FSIf(){};
 
-    virtual FileIf *open(std::string path, std::string options);
+    virtual FileIf *open(std::string path, std::string options) = 0;
 };
 
 class FS
@@ -26,5 +26,5 @@ public:
 
     void init(FSIf *fsif);
 
-    File open(std::string path, std::string options);
+    File *open(std::string path, std::string options);
 };

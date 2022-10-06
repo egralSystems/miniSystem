@@ -18,8 +18,7 @@ void FS::init(FSIf *fsif)
     this->fsif = fsif;
 }
 
-File FS::open(std::string path, std::string options)
+File *FS::open(std::string path, std::string options)
 {
-    File file(fsif->open(path, options));
-    return file;
+    return new File(fsif->open(path, options));
 }

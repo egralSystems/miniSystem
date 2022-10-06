@@ -20,11 +20,17 @@ struct IOIfs
 class IO
 {
 private:
-    IOIfs ioIfs;
+    IOIfs *ioIfs;
 
 public:
-    IO(){};
-    ~IO(){};
+    IO()
+    {
+        ioIfs = new IOIfs;
+    };
+    ~IO()
+    {
+        delete ioIfs;
+    };
 
     void registerIO(WrenVM *vm);
 

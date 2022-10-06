@@ -3,19 +3,19 @@
 
 void IO::registerIO(WrenVM *vm)
 {
-    wrenSetUserData(vm, &ioIfs);
+    wrenSetUserData(vm, (void *)ioIfs);
 }
 
 void IO::registerIf(StreamIf<std::string> *consoleIf)
 {
-    ioIfs.consoleStream.init(consoleIf);
-    ioIfs.console = true;
+    ioIfs->consoleStream.init(consoleIf);
+    ioIfs->console = true;
 }
 
 void IO::registerIf(FSIf *fsIf)
 {
-    ioIfs.fileSystem.init(fsIf);
-    ioIfs.fs = true;
+    ioIfs->fileSystem.init(fsIf);
+    ioIfs->fs = true;
 }
 
 void writeFn(WrenVM *vm, const char *msg)
