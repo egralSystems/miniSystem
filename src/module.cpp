@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include "module.hpp"
 #include "stream.hpp"
 
@@ -86,14 +88,13 @@ void errorFn(WrenVM *vm, WrenErrorType errorType, const char *module, const int 
 WrenLoadModuleResult loadModule(WrenVM *vm, const char *name)
 {
     WrenLoadModuleResult res;
+    res.onComplete = nullptr;
+    res.userData = wrenGetUserData(vm);
+    res.source = nullptr;
 
-    if (name == "FS")
+    if (strcmp(name, "FS") == 0)
     {
-        res.source = "foreign class File {\n"
-                     "  construct open(path, options) {}\n"
-                     "  foreign close()\n"
-                     "  foreign read(count)\n"
-                     "}";
+        res.source = "foreign class File {\nconstruct open(path, options) {}\nforeign close()\nforeign read(count)\n}";
     }
 
     Modules *modules = (Modules *)wrenGetUserData(vm);
