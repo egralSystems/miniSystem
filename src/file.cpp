@@ -1,6 +1,6 @@
 #include <string>
 
-#include "io.hpp"
+#include "module.hpp"
 #include "file.hpp"
 
 File::File(FileIf *fif)
@@ -45,16 +45,35 @@ void File::seek(int pos)
 
 /* WREN interface functions */
 
+WrenForeignMethodFn registerFile(std::string name, bool isStatic, std::string sig)
+{
+    if (name != "File" && !isStatic)
+        return nullptr;
+
+    if (sig == "read(_)")
+        return fileRead;
+    if (sig == "write(_)")
+        return fileWrite;
+    if (sig == "size()")
+        return fileSize;
+    if (sig == "seek(_)")
+        return fileSeek;
+    if (sig == "close()")
+        return fileClose;
+
+    return nullptr;
+}
+
 void fileAllocate(WrenVM *vm)
 {
     File **file = (File **)wrenSetSlotNewForeign(vm, 0, 0, sizeof(File *));
 
-    IOIfs *ioIfs = (IOIfs *)wrenGetUserData(vm);
+    Modules *modules = (Modules *)wrenGetUserData(vm);
 
     std::string path = wrenGetSlotString(vm, 1);
     std::string options = wrenGetSlotString(vm, 2);
 
-    *file = ioIfs->fileSystem.open(path, options);
+    *file = modules->fileSystem.open(path, options);
 }
 
 void fileFinalize(void *data)

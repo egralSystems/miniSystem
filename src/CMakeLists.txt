@@ -10,7 +10,7 @@ add_library(miniSystem
     miniSystem.cpp
     fs.cpp
     file.cpp
-    io.cpp
+    module.cpp
     stream.cpp
 )
 

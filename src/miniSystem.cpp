@@ -21,26 +21,30 @@ WrenForeignClassMethods bindForeignClass(WrenVM *vm, const char *module, const c
         methods.finalize = fileFinalize;
     }
 
+    Modules *modules = (Modules *)wrenGetUserData(vm);
+
+    if (modules->modules.find(module) != modules->modules.end())
+        if (modules->modules[module]->bindClass(&methods, module, className))
+            return methods;
+
     return methods;
 }
 
 WrenForeignMethodFn bindForeignMethod(WrenVM *vm, const char *module, const char *className, bool isStatic, const char *sig)
 {
-    if (!strcmp(module, "main"))
+    WrenForeignMethodFn potential = nullptr;
+
+    potential = registerFile(className, isStatic, sig);
+    if (potential)
+        return potential;
+
+    Modules *modules = (Modules *)wrenGetUserData(vm);
+
+    if (modules->modules.find(module) != modules->modules.end())
     {
-        if (!strcmp(className, "File"))
-        {
-            if (!isStatic && !strcmp(sig, "read(_)"))
-                return fileRead;
-            if (!isStatic && !strcmp(sig, "write(_)"))
-                return fileWrite;
-            if (!isStatic && !strcmp(sig, "size()"))
-                return fileSize;
-            if (!isStatic && !strcmp(sig, "seek(_)"))
-                return fileSeek;
-            if (!isStatic && !strcmp(sig, "close()"))
-                return fileClose;
-        }
+        potential = modules->modules[module]->bindMethods(className, isStatic, sig);
+        if (potential)
+            return potential;
     }
 
     return nullptr;

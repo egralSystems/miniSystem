@@ -34,6 +34,8 @@ public:
     void seek(int pos);
 };
 
+WrenForeignMethodFn registerFile(std::string name, bool isStatic, std::string sig);
+
 void fileAllocate(WrenVM *vm);
 void fileFinalize(void *data);
 void fileClose(WrenVM *vm);

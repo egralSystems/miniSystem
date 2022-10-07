@@ -3,7 +3,7 @@
 
 #include "stream.hpp"
 #include "fs.hpp"
-#include "io.hpp"
+#include "module.hpp"
 
 WrenForeignClassMethods bindForeignClass(WrenVM *vm, const char *module, const char *className);
 WrenForeignMethodFn bindForeignMethod(WrenVM *vm, const char *module, const char *className, bool isStatic, const char *sig);
@@ -11,11 +11,11 @@ WrenForeignMethodFn bindForeignMethod(WrenVM *vm, const char *module, const char
 class MiniSystem
 {
 private:
-    IO *io;
+    ModuleManager *io;
     WrenVM *vm;
 
 public:
-    MiniSystem(IO *new_io)
+    MiniSystem(ModuleManager *new_moduleMan)
     {
         WrenConfiguration config;
         wrenInitConfiguration(&config);
@@ -25,10 +25,11 @@ public:
         config.errorFn = errorFn;
         config.bindForeignClassFn = bindForeignClass;
         config.bindForeignMethodFn = bindForeignMethod;
+        config.loadModuleFn = loadModule;
 
         vm = wrenNewVM(&config);
 
-        io = new_io;
+        io = new_moduleMan;
 
         io->registerIO(vm);
     }

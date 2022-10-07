@@ -31,6 +31,8 @@ public:
 
     void init(StreamIf<DataType> *sif)
     {
+        if (this->sif)
+            delete this->sif;
         this->sif = sif;
     }
 
